@@ -7,13 +7,21 @@ def PrimeList(N):
     返回:    str - 包含所有小于 N 的质数的字符串，空格分隔
     """
     primes = []
+    if N <= 2:
+        return ''
     for num in range(2, N):
         is_prime = True
-        # 检查从2到num平方根之间的数是否能整除num
-        for i in range(2, int(math.sqrt(num)) + 1):
-            if num % i == 0:
-                is_prime = False
-                break
+        # 优化：只检查到平方根，且步长为2（排除偶数）
+        sqrt_num = int(math.sqrt(num)) + 1
+        # 先判断是否为偶数（除2外）
+        if num > 2 and num % 2 == 0:
+            is_prime = False
+        else:
+            # 只检查奇数
+            for i in range(3, sqrt_num, 2):
+                if num % i == 0:
+                    is_prime = False
+                    break
         if is_prime:
             primes.append(str(num))
     return ' '.join(primes)
